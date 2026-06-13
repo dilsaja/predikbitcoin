@@ -159,11 +159,7 @@ if uploaded_file:
                 st.stop()
 
             # Scaling data test menggunakan scaler bawaan dari Colab
-            X_test_scaled_arr  = scaler.transform(X_test)
-            last_row_scaled_arr = scaler.transform(X.iloc[[-1]])
- 
-            X_test_scaled_df  = pd.DataFrame(X_test_scaled_arr,  columns=fitur)
-            last_scaled_df    = pd.DataFrame(last_row_scaled_arr, columns=fitur)
+            X_test_scaled = scaler.transform(X_test)
 
             colA, colB = st.columns(2)
             with colA:
@@ -177,8 +173,8 @@ if uploaded_file:
         # ================================ #
         # Evaluasi Metrik
         # ================================ #
-        y_pred_xgb = xgb_model.predict(X_test_scaled_df)
-        y_pred_rf  = rf_model.predict(X_test_scaled_df)
+        y_pred_xgb = xgb_model.predict(X_test_scaled)
+        y_pred_rf = rf_model.predict(X_test_scaled)
 
         # Metrik XGBoost
         mae_xgb = mean_absolute_error(y_test, y_pred_xgb)
@@ -188,7 +184,7 @@ if uploaded_file:
 
         # Prediksi Besok XGBoost
         last_scaled = scaler.transform(X.iloc[[-1]])
-        pred_next_xgb = xgb_model.predict(last_scaled_df)[0]
+        pred_next_xgb = xgb_model.predict(last_scaled)[0]
         last_close = df["Close"].iloc[-1]
         pred_return_xgb = (pred_next_xgb - last_close) / last_close
 
@@ -199,7 +195,7 @@ if uploaded_file:
         r2_rf = r2_score(y_test, y_pred_rf)
 
         # Prediksi Besok RF
-        pred_next_rf = rf_model.predict(last_scaled_df)[0]
+        pred_next_rf = rf_model.predict(last_scaled)[0]
         pred_return_rf = (pred_next_rf - last_close) / last_close
 
         # ================================ #
