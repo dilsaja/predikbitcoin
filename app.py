@@ -247,22 +247,7 @@ if uploaded_file:
         ax2.grid(True)
         st.pyplot(fig2)
 
-        # Visualisasi Error Harian
-        st.subheader("📉 Error Model pada Data Testing")
-        error_df = pd.DataFrame({
-            "Date": df_test["Date"],
-            "Error_XGB": np.abs(y_test.values - y_pred_xgb),
-            "Error_RF": np.abs(y_test.values - y_pred_rf)
-        })
-        fig3, ax3 = plt.subplots(figsize=(16, 6))
-        ax3.plot(error_df["Date"], error_df["Error_XGB"], label="XGBoost Error", color="orange")
-        ax3.plot(error_df["Date"], error_df["Error_RF"], label="RF Error", color="green")
-        ax3.set_title("Perbandingan Error Harian")
-        ax3.set_xlabel("Tanggal")
-        ax3.set_ylabel("Absolute Error")
-        ax3.legend()
-        ax3.grid(True)
-        st.pyplot(fig3)
+
 
         # Feature Importance XGBoost
         colC, colD = st.columns(2)
